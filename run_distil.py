@@ -55,10 +55,6 @@ from transformers import (
 
 
 
-NEPTUNE_PROJECT="Peltarion/msc-joana"
-NEPTUNE_API_TOKEN="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJlYzFhM2QwNC0wOGVmLTQ3NzUtYWZkNi02Y2UzY2I5ZTZjYTIifQ=="
-
-
 MODEL_CLASSES = {
     "dna": (BertConfig, BertForMaskedLM, DNATokenizer),
     "dnaprom": (BertConfig, BertForSequenceClassification, DNATokenizer),
@@ -202,91 +198,7 @@ def main():
     parser.add_argument("--block_size", default=-1, type=int, help="Optional input sequence length after tokenization. The training dataset will be truncated in block of this size for training."
                         "Default to the model max input length for single sentence inputs (take into account special tokens).",)
     
-    """
-    #Train
-    sys.argv = ['run_general_distil.py',
-                '--train_data_file', '/workspace/data/pretrain/pretrain_data_cut6.txt',
-                '--output_dir', '/workspace/models/minilm/6kmer_general',  '--overwrite_output_dir',
-                "--student_model_type", "minidna",
-                "--student_config_name", "/workspace/msc_joana/src/transformers/dnabert-config/minilm-config-6",
-                #"--student_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/minilm/6kmer_general',
-                "--teacher_name_or_path", '/workspace/models/dnabert/6kmer_pre', 
-                "--teacher_model_type", "dnaprom",
-                "--line_by_line",
-                "--mlm",
-                '--do_train',
-                '--do_val',
-                '--do_eval',
-                '--tokenizer_name', 'dna6', 
-                '--eval_data_file', '/workspace/data/pretrain/val_pretrain_data_cut6.txt', 
-                '--gradient_accumulation_steps', '16', 
-                '--learning_rate', '0.0005',
-                '--logging_steps', '500', 
-                '--save_steps', '500',#'1000', 
-                '--val_steps', '500',#'100',
-                '--n_process', '24', 
-                '--num_train_epochs', '30.0',
-                '--per_gpu_eval_batch_size', '16', '--per_gpu_train_batch_size', '16',
-                '--warmup_prop', '0.05', '--weight_decay', '0.01',
-                '--beta2', '0.999', 
-                '--neptune', '--neptune_tags', ["MiniLM", "trial"],
-                '--fp16']
-                #
     
-    # "--teacher_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/dnabert/6kmer_pre', 
-    # "--teacher_model_type", "dna",
-    # '--mlm', '--line_by_line',
-    """
-    # Evaluate
-    sys.argv = ['run_general_distil.py',
-                '--output_dir', '/mnt/storage/data/joana_pales/msc-joana/models/minilm_mini/6kmer_prom', 
-                "--student_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/minilm_mini/6kmer_prom',
-                "--student_model_type", "minidnaprom",
-                "--metrics",
-                '--do_eval',
-                '--eval_data_file', '/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer', 
-                '--per_gpu_eval_batch_size', '32']
-    """
-    #Viz
-    sys.argv = ['run_general_distil.py',
-                '--output_dir', '/mnt/storage/data/joana_pales/msc-joana/models/dnabert/6kmer_prom', 
-                "--student_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/only_ft/6kmer_prom',
-                "--student_model_type", "dnaprom",
-                '--tokenizer_name', 'dna6', 
-                '--do_viz', 
-                '--per_gpu_eval_batch_size', '32',
-                '--train_data_file', '/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer']
-    
-
-    #Train
-    sys.argv = ['run_general_distil.py',
-                '--train_data_file', '/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer',
-                '--output_dir', '/mnt/storage/data/joana_pales/msc-joana/models/prova/distilbert', '--overwrite_output_dir',
-                "--student_model_type", "distildnaprom",
-                #"--student_config_name", "/mnt/storage/data/joana_pales/msc-joana/msc_joana/src/transformers/dnabert-config/distilbert-config-6",
-                "--student_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/distilbert/6kmer_general',
-                "--teacher_name_or_path", '/mnt/storage/data/joana_pales/msc-joana/models/dnabert/6kmer_prom', 
-                "--teacher_model_type", "dnaprom",
-                "--metrics",
-                '--do_train',
-                '--do_val',
-                '--do_eval',
-                '--tokenizer_name', 'dna6', 
-                '--eval_data_file', '/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer', 
-                '--gradient_accumulation_steps', '8', 
-                '--learning_rate', '0.0004',
-                '--logging_steps', '30', 
-                '--save_steps', '60', #,'1000', 
-                '--val_steps', '30',#'100',
-                '--n_process', '24', 
-                '--num_train_epochs', '1.0',
-                '--per_gpu_eval_batch_size', '16', '--per_gpu_train_batch_size', '16',
-                '--warmup_prop', '0.05', '--weight_decay', '0.01',
-                '--beta2', '0.98',
-                '--neptune', '--neptune_tags', ["Test"],
-                '--neptune_description', 'Distilbert TEST']
-                #'--fp16']
-    """
     args = parser.parse_args()
 
 
@@ -339,12 +251,10 @@ def main():
 
 
     # SETUP -----------------------------------------------------------------------------------------------------
-    # TODO canviar el num gpu i el :1
     # Setup CUDA, GPU & distributed training
     if args.local_rank == -1 or args.no_cuda:
-        device = torch.device("cuda:0" if torch.cuda.is_available() and not args.no_cuda else "cpu")
-        args.n_gpu = 1
-        #args.n_gpu = torch.cuda.device_count()
+        device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+        args.n_gpu = torch.cuda.device_count()
     else:  # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
         torch.cuda.set_device(args.local_rank)
         device = torch.device("cuda", args.local_rank)
@@ -360,12 +270,6 @@ def main():
         bool(args.local_rank != -1),
     )
     
-    # TODO remove this
-    # Neptune setup
-    if args.neptune:
-        args.neptune_token = NEPTUNE_API_TOKEN
-        args.neptune_project = NEPTUNE_PROJECT
-        
 
     # Set seed
     set_seed(args)
