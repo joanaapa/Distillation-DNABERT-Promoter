@@ -44,11 +44,6 @@ from tqdm import tqdm, trange
 from data_loaders import load_and_cache_examples_promoter as load_and_cache_examples
 from data_loaders import visualize 
 
-# TODO remove
-# Neptune API (loaded as global env. variables from the Training Callback)
-NEPTUNE_API_TOKEN = config("NEPTUNE_API_TOKEN")
-NEPTUNE_PROJECT = config("NEPTUNE_PROJECT")
-
 
 from src.transformers import (
     WEIGHTS_NAME,
@@ -559,82 +554,9 @@ def main():
     parser.add_argument("--overwrite_cache", action="store_true", help="Overwrite the cached training and evaluation sets",)
     parser.add_argument("--do_lower_case", action="store_true", help="Set this flag if you are using an uncased model.",)
 
-    
-
-    
-    """
-    sys.argv = [
-        "run_finetune.py",
-        "--model_type",
-        "dna",
-        "--tokenizer_name=dna4",
-        "--model_name_or_path",
-        "/mnt/storage/data/joana_pales/msc-joana/models/dnabert/4kmer_prom",
-        "--task_name",
-        "dnaprom",
-        "--do_visualize",
-        "--visualize_data_dir",
-        "/mnt/storage/data/joana_pales/msc-joana/data/promoters/4kmer",
-        "--visualize_models", "4",
-        "--data_dir",
-        "/mnt/storage/data/joana_pales/msc-joana/data/promoters/4kmer",
-        "--max_seq_length",
-        "384",
-        "--per_gpu_pred_batch_size",
-        "64",
-        "--output_dir",
-        "/mnt/storage/data/joana_pales/msc-joana/models/dnabert/4kmer_prom",
-
-    ]
-    
-    
-    sys.argv = [
-        "run_finetune.py",
-        "--model_type", "dna",
-        "--model_name_or_path", "/mnt/storage/data/joana_pales/msc-joana/models/minilm/6kmer_general",
-        "--do_train",
-        "--do_eval",
-        "--data_dir", "/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer",
-        "--max_seq_length", "384",
-        "--per_gpu_eval_batch_size", "32",
-        "--per_gpu_train_batch_size", "32",
-        "--learning_rate", "5e-5",
-        "--num_train_epochs","1.0",
-        "--output_dir","/mnt/storage/data/joana_pales/msc-joana/models/prova/ft",
-        "--evaluate_during_training",
-        "--logging_steps", "100",
-        "--do_visualize_during_training",
-        "--image_steps", "100",
-        "--save_steps","1000",
-        "--warmup_percent","0.06",
-        "--hidden_dropout_prob","0.1",
-        "--overwrite_output",
-        "--weight_decay","0.01",
-        "--n_process", "8",
-        "--seed", "34",
-        "--neptune"
-    ]
-    
-    """
-
-    sys.argv = [
-    "run_finetune.py",
-    "--model_type", "minidnaprom",
-    "--model_name_or_path", "/mnt/storage/data/joana_pales/msc-joana/models/minilm_small/6kmer_prom",
-    "--do_visualize",
-    "--per_gpu_eval_batch_size", "32",
-    "--data_dir", "/mnt/storage/data/joana_pales/msc-joana/data/promoters/6kmer",
-    "--output_dir","/mnt/storage/data/joana_pales/msc-joana/models/minilm_small/6kmer_prom",
-    ]
-    
 
     args = parser.parse_args()
 
-    # TODO remove this
-    # Neptune setup
-    if args.neptune:
-        args.neptune_token = NEPTUNE_API_TOKEN
-        args.neptune_project = NEPTUNE_PROJECT
 
     if args.do_train and args.neptune:
         run = neptune.init(
@@ -665,13 +587,11 @@ def main():
         )
 
 
-    # TODO change this
     # Setup CUDA, GPU & distributed training
     # Segons els que he entès, local_rank és per si utilitzes més d'una màquina. Pot ser que utilitzis 1+ gpu però totes a la mateixa màquina
     if args.local_rank == -1 or args.no_cuda:
-        device = torch.device("cuda:1" if torch.cuda.is_available() and not args.no_cuda else "cpu")
-        #args.n_gpu = torch.cuda.device_count()
-        args.n_gpu = 1
+        device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+        args.n_gpu = torch.cuda.device_count()
         print("devices", device)
         print("Number of gpus", args.n_gpu)
     else:  # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
@@ -716,7 +636,7 @@ def main():
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
 
-    # TODO why if not do_visualize?
+    
     if not args.do_visualize:
         config = config_class.from_pretrained(
             args.config_name if args.config_name else args.model_name_or_path,
