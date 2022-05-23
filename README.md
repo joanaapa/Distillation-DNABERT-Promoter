@@ -4,6 +4,8 @@ This repository includes the implementation of "Knowledge Distillaton of DNABERT
 
 All the models were build upon the framework provided by HuggingFace. Parts of the code provided by the authors of [DNABERT](https://github.com/jerryji1993/DNABERT), [DistilBERT](https://github.com/huggingface/transformers/tree/main/examples/research_projects/distillation) and an unoﬀicial reimplementation of [MiniLM](https://github.com/jongwooko/Pytorch-MiniLM) served as a base for this work and were extended to fit the specific needs.
 
+For more information on the methodology and results, please check the full document [link to be added].
+
 ## Usage examples
 
 Below you can find examples on how to perform basic distillations, promoter fine-tuning and evaluation. 
