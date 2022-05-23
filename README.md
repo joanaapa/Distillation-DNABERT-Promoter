@@ -12,14 +12,18 @@ Check allowed arguments to find more advanced options, e.g. `python run_distil.p
 ### Pre-train DistilBERT student model
 
 ```bash
-python 'run_distil.py' \
-    --train_data_file sample_6_3k.txt \
+python run_distil.py \
+    --train_data_file data/pretrain/sample_6_3k.txt \
     --output_dir models \
     --student_model_type distildna \
     --student_config_name src/transformers/dnabert-config/distilbert-config-6 \
     --teacher_name_or_path models/dnabert/6mer_pretrained \
     --mlm \
     --do_train \
+    --alpha_ce 2 \
+    --alpha_mlm 7 \
+    --alpha_cos 1 \
+    --per_gpu_train_batch_size 32 \
     --learning_rate 0.0004 \
     --logging_steps 500 \
     --save_steps 8000 \
@@ -29,16 +33,61 @@ python 'run_distil.py' \
 ### Pre-train MiniLM student model
 
 ```bash
-
-```
-
-### Fine-tune for promoter identification
-```bash
-
+python run_distil.py \
+    --train_data_file data/pretrain/sample_6_3k.txt \
+    --output_dir models \
+    --student_model_type minidna \
+    --student_config_name src/transformers/dnabert-config/minilm-config-6 \
+    --teacher_name_or_path models/dnabert/6mer_pretrained \
+    --mlm \
+    --do_train \
+    --per_gpu_train_batch_size 32 \
+    --learning_rate 0.0004 \
+    --logging_steps 500 \
+    --save_steps 8000 \
+    --num_train_epochs 2
 ```
 
 ### DistilBERT additional distillation for promoter identification
 
+_Before running the script, process promoter dataset to obtain the training data using `porcess_finetune_data.py`_
+
+```bash
+python run_distil.py \
+    --train_data_file data/promoters/6mer \
+    --output_dir models \
+    --student_model_type distildnaprom \
+    --student_name_or_path models/distilbert/6mer_general \
+    --teacher_model_type dnaprom \
+    --teacher_name_or_path models/dnabert/6mer_prom \
+    --do_train \
+    --per_gpu_train_batch_size 32 \
+    --learning_rate 0.00005 \
+    --logging_steps 500 \
+    --save_steps 1000 \
+    --num_train_epochs 3 \
+    --do_val \
+    --eval_data_file data/promoters/6kmer
+```
+    
+### Fine-tune for promoter identification
+
+_Before running the script, process promoter dataset to obtain the training data using `porcess_finetune_data.py`_
+
+```bash
+python run_finetune.py \
+    --data_dir data/promoters/6mer \
+    --output_dir models \
+    --student_model_type distildnaprom \
+    --model_name_or_path models/distilbert/6mer_general \
+    --do_train \
+    --per_gpu_train_batch_size 32 \
+    --learning_rate 0.00005 \
+    --logging_steps 100 \
+    --save_steps 1000 \
+    --num_train_epochs 3 \
+    --evaluate_during_training 
+```
 
 
 ### Classification metrics evaluation on test set
