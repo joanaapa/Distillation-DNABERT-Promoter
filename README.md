@@ -78,7 +78,7 @@ _Before running the script, process promoter dataset to obtain the training data
 python run_finetune.py \
     --data_dir data/promoters/6mer \
     --output_dir models \
-    --student_model_type distildnaprom \
+    --model_type distildnaprom \
     --model_name_or_path models/distilbert/6mer_general \
     --do_train \
     --per_gpu_train_batch_size 32 \
@@ -89,14 +89,45 @@ python run_finetune.py \
     --evaluate_during_training 
 ```
 
+### Promoter prediction on test set
+
+_Example with fine-tuned DNABERT_
+
+```bash
+python run_finetune.py \
+    --data_dir data/promoters/6mer \
+    --output_dir models \
+    --model_type dnaprom \
+    --model_name_or_path models/dnabert/6mer_prom \
+    --do_predict \
+    --per_gpu_eval_batch_size 32  
+```
 
 ### Classification metrics evaluation on test set
-```bash
 
+_Example with fine-tuned MiniLM_
+
+```bash
+python run_finetune.py \
+    --data_dir data/promoters/6mer \
+    --output_dir models \
+    --model_type minidnaprom \
+    --model_name_or_path models/minilm/6mer_prom \
+    --do_eval \
+    --per_gpu_eval_batch_size 32  
 ```
 
 ### Attention landscapes for TATA-promoters
-```bash
 
+_Example with fine-tuned DistilBERT_
+
+```bash
+python run_finetune.py \
+    --data_dir data/promoters/6mer \
+    --output_dir models \
+    --model_type distildnaprom \
+    --model_name_or_path models/distilbert/6mer_prom \
+    --do_eval \
+    --per_gpu_eval_batch_size 32  
 ```
 
