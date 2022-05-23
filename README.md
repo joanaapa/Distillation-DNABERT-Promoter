@@ -6,10 +6,24 @@ All the models were build upon the framework provided by HuggingFace. Parts of t
 
 ## Usage examples
 
+Below you can find examples on how to perform basic distillations, promoter fine-tuning and evaluation. 
+Check allowed arguments to find more advanced options, e.g. `python run_distil.py -h`.
+
 ### Pre-train DistilBERT student model
 
 ```bash
-
+python 'run_distil.py' \
+    --train_data_file sample_6_3k.txt \
+    --output_dir models \
+    --student_model_type distildna \
+    --student_config_name src/transformers/dnabert-config/distilbert-config-6 \
+    --teacher_name_or_path models/dnabert/6mer_pretrained \
+    --mlm \
+    --do_train \
+    --learning_rate 0.0004 \
+    --logging_steps 500 \
+    --save_steps 8000 \
+    --num_train_epochs 2
 ```
 
 ### Pre-train MiniLM student model
@@ -22,6 +36,10 @@ All the models were build upon the framework provided by HuggingFace. Parts of t
 ```bash
 
 ```
+
+### DistilBERT additional distillation for promoter identification
+
+
 
 ### Classification metrics evaluation on test set
 ```bash
