@@ -99,9 +99,9 @@ _Example with fine-tuned DNABERT_
 python run_finetune.py \
     --data_dir data/promoters/6mer \
     --output_dir models \
+    --do_predict \
     --model_type dnaprom \
     --model_name_or_path models/dnabert/6mer_prom \
-    --do_predict \
     --per_gpu_eval_batch_size 32  
 ```
 
@@ -113,9 +113,9 @@ _Example with fine-tuned MiniLM_
 python run_finetune.py \
     --data_dir data/promoters/6mer \
     --output_dir models \
+    --do_eval \
     --model_type minidnaprom \
     --model_name_or_path models/minilm/6mer_prom \
-    --do_eval \
     --per_gpu_eval_batch_size 32  
 ```
 
@@ -127,9 +127,9 @@ _Example with fine-tuned DistilBERT_
 python run_finetune.py \
     --data_dir data/promoters/6mer \
     --output_dir models \
+    --do_visualize \
     --model_type distildnaprom \
     --model_name_or_path models/distilbert/6mer_prom \
-    --do_visualize \
     --per_gpu_eval_batch_size 32  
 ```
 
