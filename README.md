@@ -63,6 +63,8 @@ python run_distil.py \
     --teacher_model_type dnaprom \
     --teacher_name_or_path models/dnabert/6mer_prom \
     --do_train \
+    --alpha_ce 1 \
+    --alpha_mlm 1 \
     --per_gpu_train_batch_size 32 \
     --learning_rate 0.00005 \
     --logging_steps 500 \
