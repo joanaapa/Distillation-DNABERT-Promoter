@@ -129,7 +129,7 @@ python run_finetune.py \
     --output_dir models \
     --model_type distildnaprom \
     --model_name_or_path models/distilbert/6mer_prom \
-    --do_eval \
+    --do_visualize \
     --per_gpu_eval_batch_size 32  
 ```
 
