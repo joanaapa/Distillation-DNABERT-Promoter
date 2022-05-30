@@ -94,10 +94,6 @@ def main():
     parser.add_argument("--output_path", default="/workspace/data/promoters", type=str, help="The path of the processed data",)
     parser.add_argument("--valtest_percentage", default=0.1, type=str, help="Percentage of data used for val and for test (same for both)",)
 
-
-    # Override arg parser for debugging
-    sys.argv = ['process_finetune_data.py', '--kmer', '6', '--file_path', '/mnt/storage/data/joana_pales/msc-joana/data/promoters','--output_path', '/mnt/storage/data/joana_pales/msc-joana/data/promoters', "--valtest_percentage", "0.1"]
-
     args = parser.parse_args()
 
     Generate_prom_train_dev(args)
