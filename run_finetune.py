@@ -46,15 +46,18 @@ from data_loaders import visualize
 
 
 from src.transformers import (
+    DNATokenizer
+)
+
+from transformers import (
+    BertConfig,
+    DistilBertConfig,
     WEIGHTS_NAME,
     AdamW,
-    BertConfig,
     BertForSequenceClassification,
-    DistilBertConfig,
     DistilBertForSequenceClassification,
-    DNATokenizer,
-    get_linear_schedule_with_warmup,
-)
+) 
+
 from src.transformers import glue_compute_metrics as compute_metrics
 from src.transformers import glue_output_modes as output_modes
 from src.transformers import glue_processors as processors
@@ -67,16 +70,6 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-ALL_MODELS = sum(
-    (
-        tuple(conf.pretrained_config_archive_map.keys())
-        for conf in (
-            BertConfig,
-            DistilBertConfig,
-        )
-    ),
-    (),
-)
 
 MODEL_CLASSES = {
     "dnaprom": (BertConfig, BertForSequenceClassification, DNATokenizer),
@@ -495,7 +488,7 @@ def main():
     parser.add_argument("--model_type", default=None, type=str, required=True, help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()),)
     parser.add_argument("--should_continue", action="store_true", help="Whether to continue from latest checkpoint in output_dir")
     parser.add_argument("--config_name", default="", type=str, help="Pretrained config name or path if not the same as model_name",)
-    parser.add_argument("--model_name_or_path", default=None, type=str, required=True, help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),)
+    parser.add_argument("--model_name_or_path", default=None, type=str, required=True, help="Path to pre-trained model or shortcut name selected in the list",)
     parser.add_argument("--task_name", default='dnaprom', type=str, help="Script only prepared for promoter task" )
     parser.add_argument("--output_dir", default=None, type=str, required=True, help="The output directory where the model predictions and checkpoints will be written.",)
     parser.add_argument("--tokenizer_name",default="dna6",type=str, help="Pretrained tokenizer name or path if not the same as model_name",)
