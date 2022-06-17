@@ -30,7 +30,7 @@ python run_distil.py \
     --output_dir models \
     --student_model_type distildna \
     --student_config_name src/transformers/dnabert-config/distilbert-config-6 \
-    --teacher_name_or_path models/dnabert/6mer_pretrained \
+    --teacher_name_or_path Path_to_pretrained_DNABERT \
     --mlm \
     --do_train \
     --alpha_ce 2 \
@@ -51,7 +51,7 @@ python run_distil.py \
     --output_dir models \
     --student_model_type minidna \
     --student_config_name src/transformers/dnabert-config/minilm-config-6 \
-    --teacher_name_or_path models/dnabert/6mer_pretrained \
+    --teacher_name_or_path Path_to_pretrained_DNABERT \
     --mlm \
     --do_train \
     --per_gpu_train_batch_size 32 \
@@ -70,9 +70,9 @@ python run_distil.py \
     --train_data_file data/promoters/6mer \
     --output_dir models \
     --student_model_type distildnaprom \
-    --student_name_or_path models/distilbert/6mer_general \
+    --student_name_or_path Peltarion/dnabert-distilbert \
     --teacher_model_type dnaprom \
-    --teacher_name_or_path models/dnabert/6mer_prom \
+    --teacher_name_or_path Path_to_finetuned_DNABERT \
     --do_train \
     --alpha_ce 1 \
     --alpha_mlm 1 \
@@ -94,7 +94,7 @@ python run_finetune.py \
     --data_dir data/promoters/6mer \
     --output_dir models \
     --model_type distildnaprom \
-    --model_name_or_path models/distilbert/6mer_general \
+    --model_name_or_path Peltarion/dnabert-distilbert \
     --do_train \
     --per_gpu_train_batch_size 32 \
     --learning_rate 0.00005 \
@@ -114,7 +114,7 @@ python run_finetune.py \
     --output_dir models \
     --do_predict \
     --model_type dnaprom \
-    --model_name_or_path models/dnabert/6mer_prom \
+    --model_name_or_path Path_to_finetuned_DNABERT \
     --per_gpu_eval_batch_size 32  
 ```
 
@@ -128,7 +128,7 @@ python run_finetune.py \
     --output_dir models \
     --do_eval \
     --model_type minidnaprom \
-    --model_name_or_path models/minilm/6mer_prom \
+    --model_name_or_path Path_to_finetuned_MiniLM \
     --per_gpu_eval_batch_size 32  
 ```
 
@@ -142,7 +142,7 @@ python run_finetune.py \
     --output_dir models \
     --do_visualize \
     --model_type distildnaprom \
-    --model_name_or_path models/distilbert/6mer_prom \
+    --model_name_or_path Path_to_finetuned_DistilBERT \
     --per_gpu_eval_batch_size 32  
 ```
 
