@@ -4,7 +4,7 @@ This repository includes the implementation of "Knowledge Distillaton of DNABERT
 
 All the models were build upon the framework provided by HuggingFace. Parts of the code provided by the authors of [DNABERT](https://github.com/jerryji1993/DNABERT), [DistilBERT](https://github.com/huggingface/transformers/tree/main/examples/research_projects/distillation) and an unoﬀicial reimplementation of [MiniLM](https://github.com/jongwooko/Pytorch-MiniLM) served as a base for this work and were extended to fit the specific needs.
 
-For more information on the methodology and results, please check the full document [link to be added].
+For more information on the methodology and results, please check the [full thesis](http://www.diva-portal.org/smash/record.jsf?dswid=846&pid=diva2%3A1676068&c=1&searchType=SIMPLE&language=en&query=joana+palés&af=%5B%5D&aq=%5B%5B%5D%5D&aq2=%5B%5B%5D%5D&aqe=%5B%5D&noOfRows=50&sortOrder=author_sort_asc&sortOrder2=title_sort_asc&onlyFullText=false&sf=all).
 
 ## Pre-trained models
 
