@@ -146,7 +146,7 @@ python run_finetune.py \
     --per_gpu_eval_batch_size 32  
 ```
 
-### Citation
+## Citation
 
 ```bash
 @misc{pales2022knowledge,
