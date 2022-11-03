@@ -146,3 +146,12 @@ python run_finetune.py \
     --per_gpu_eval_batch_size 32  
 ```
 
+### Citation
+
+```bash
+@misc{pales2022knowledge,
+  title={Knowledge Distillation of DNABERT for Prediction of Genomic Elements},
+  author={Pal{\'e}s Huix, Joana},
+  year={2022}
+}
+```
